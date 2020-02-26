@@ -9,7 +9,7 @@ import ast
 
 # Get G from .txt file:
 
-G = nx.read_edgelist('edge2.txt', create_using=nx.DiGraph())
+G = nx.read_edgelist('edge1.txt', create_using=nx.DiGraph())
 layout = nx.spring_layout(G)
 nx.draw(G, layout, with_labels=True)
 labels = nx.get_edge_attributes(G, 'weight')
@@ -55,7 +55,7 @@ def getPathBFS(G, s, t):
     if t not in S: # If t is not reachable from s, no path exists
         return None 
     path = [t]
-    current = len(d) - 1 # Start from end of predecessor list
+    current = int(t) # Start from end of predecessor list
     while d[current] != s:
         path.insert(0, d[current]) # Insert it into the path
         current = int(d[current]) # Make its predecessor the current
