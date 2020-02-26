@@ -8,15 +8,7 @@ import matplotlib.pyplot as plt
 import ast
 import time
 
-# assumptions:
-# 1. the input file will contain at least two nodes 1 and 2
-# 2. (1) will be the source
-# 3. (2) will be the sink
-# 4. there is always a path from (1) to (2)
-
-
 # BFS:
-
 def BFS(G, u):
     vertices = list(G.nodes) # Get # of vertices
     vertex_nums = []
@@ -42,7 +34,6 @@ def BFS(G, u):
                 d[int(y)] = x # Add y to T with edge (x,y)
     return S, d # Output S and the "tree" (predecessor list)
 
-# Helper Functions:
 
 # Gets path to augment flow along
 def getPathBFS(G, s, t):
@@ -160,7 +151,7 @@ def plotGraph(fileName):
 
 def main():
     # inputFileName = "file name" + "suffix"
-    inputFileName = "edge_list1.txt"
+    inputFileName = "edge_list3.txt"
     plotGraph(inputFileName)
     maxFlowUsingBFS(inputFileName)
     maxFlowUsingDij(inputFileName)
