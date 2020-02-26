@@ -131,7 +131,7 @@ def compareBFStoDij(fileName):
     count = 1000
     for i in range(count):
         # s = 0 and sink = last numbered node = num of nodes - 1
-        FordFulkersonBFS(G,'0', str(G.number_of_nodes() - 1))
+        FordFulkersonBFS(G,'1', '2')
     end = time.perf_counter()
     totalTime = (end-start) / count
     result = "Ford Fulkerson BFS: " + str(totalTime)
@@ -140,7 +140,7 @@ def compareBFStoDij(fileName):
     start = time.perf_counter()
     for i in range(count):
         # s = 0 and sink = last numbered node = num of nodes - 1
-        FordFulkersonDijkstra(G,'0', str(G.number_of_nodes() - 1))
+        FordFulkersonDijkstra(G,'1', '2')
     end = time.perf_counter()
     totalTime2 = (end-start) / count
     result = "Ford Fulkerson Dijkstra: " + str(totalTime2)
@@ -159,11 +159,12 @@ def plotGraph(fileName):
     plt.show()
 
 def main():
-    inputFileName = "edge_list2.txt"
+    # inputFileName = "file name" + "suffix"
+    inputFileName = "edge_list1.txt"
     plotGraph(inputFileName)
     maxFlowUsingBFS(inputFileName)
     maxFlowUsingDij(inputFileName)
-    # compareBFStoDij(inputFileName)
+    compareBFStoDij(inputFileName)
 
 
 main()
