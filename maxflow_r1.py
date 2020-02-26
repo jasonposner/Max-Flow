@@ -18,13 +18,14 @@ import time
 # BFS:
 
 def BFS(G, u):
-    n = len(list(G.nodes)) # Get # of vertices
-    # range n + 1 because 0 will not be used but len(visited) will be
-    # increased size of visited by 1 since 0 won't be used and size will be
-    Visited = [False for x in range(n+1)] # Set visitied[i] = False for 1 <= i <= n
+    vertices = list(G.nodes) # Get # of vertices
+    vertex_nums = []
+    vertex_nums = [int(x) for x in vertices]
+    n = max(vertex_nums) + 1 # List needs to be size of highest vertex index #
+    Visited = [False for x in range(n)] # Set visitied[i] = False for 1 <= i <= n
     S = []
-    ToExplore = [] # Queue: ToExplore.
-    d = [None for x in range(n+1)] # Gets the predecessor each node (for the tree/path finding)
+    ToExplore = [] # Queue: ToExplore
+    d = [None for x in range(n)] # Gets the predecessor each node (for the tree/path finding)
     # Add u to ToExplore and to S
     ToExplore.append(u)
     S.append(u)
@@ -49,7 +50,7 @@ def getPathBFS(G, s, t):
     if t not in S: # If t is not reachable from s, no path exists
         return None
     path = [t]
-    current = len(d) - 1 # Start from end of predecessor list
+    current = int(t) # Start from end of predecessor list
     while d[current] != s:
         path.insert(0, d[current]) # Insert it into the path
         current = int(d[current]) # Make its predecessor the current
@@ -58,12 +59,8 @@ def getPathBFS(G, s, t):
 
 def getPathCapacity(G, p):
     # For vertices in p
-    print("in path capacity")
-    print(str(p))
     capacities = [] # List capacities; we want the minimum
     for i in range(len(p) - 1):
-        print(str(G[p[i]][p[i+1]]['weight']))
-        # fetch first item in path, second -> get weight
         capacities.append(G[p[i]][p[i+1]]['weight'])
     return min(capacities)
 
@@ -162,10 +159,10 @@ def plotGraph(fileName):
     plt.show()
 
 def main():
-    inputFileName = "edge_list1.txt"
-    # plotGraph(inputFileName)
+    inputFileName = "edge_list2.txt"
+    plotGraph(inputFileName)
     maxFlowUsingBFS(inputFileName)
-    # maxFlowUsingDij(inputFileName)
+    maxFlowUsingDij(inputFileName)
     # compareBFStoDij(inputFileName)
 
 

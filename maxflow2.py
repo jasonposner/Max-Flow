@@ -29,7 +29,7 @@ def BFS(G, u):
     d = [None for x in range(n)] # Gets the predecessor each node (for the tree/path finding)
     # Add u to ToExplore and to S
     ToExplore.append(u)
-    S.append(u) 
+    S.append(u)
     Visited[int(u)] = True # Visited[u] = True
     # While ToExplore is non-exmpty
     while(len(ToExplore) != 0):
@@ -51,9 +51,9 @@ def BFS(G, u):
 
 # Gets path to augment flow along
 def getPathBFS(G, s, t):
-    S, d = BFS(G, s) 
+    S, d = BFS(G, s)
     if t not in S: # If t is not reachable from s, no path exists
-        return None 
+        return None
     path = [t]
     current = int(t) # Start from end of predecessor list
     while d[current] != s:
@@ -61,7 +61,7 @@ def getPathBFS(G, s, t):
         current = int(d[current]) # Make its predecessor the current
     path.insert(0, s)
     return path
-        
+
 def getPathCapacity(G, p):
     # For vertices in p
     capacities = [] # List capacities; we want the minimum
@@ -85,7 +85,7 @@ def updateResidualGraph(G, p, f):
             G.remove_edge(v,u)
 
 # Algorithms:
-      
+
 def FordFulkersonBFS(G, s, t):
     G_f = G.copy() # Residual Graph
     f = 0
@@ -115,6 +115,3 @@ def FordFulkersonDijkstra(G, s, t):
         f += f_prime # f = f + f'
         updateResidualGraph(G_f, path, f_prime) # Update G_f
     return f # Output f
-
-
-
