@@ -6,15 +6,14 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 import ast
+import time
 
-# Get G from .txt file:
+# assumptions:
+# 1. the input file will contain at least two nodes 1 and 2
+# 2. (1) will be the source
+# 3. (2) will be the sink
+# 4. there is always a path from (1) to (2)
 
-G = nx.read_edgelist('edge_list.txt', create_using=nx.DiGraph())
-layout = nx.spring_layout(G)
-nx.draw(G, layout, with_labels=True)
-labels = nx.get_edge_attributes(G, 'weight')
-nx.draw_networkx_edge_labels(G, pos=layout, edge_labels = labels)
-plt.show()
 
 # BFS:
 
@@ -26,7 +25,7 @@ def BFS(G, u):
     d = [None for x in range(n)] # Gets the predecessor each node (for the tree/path finding)
     # Add u to ToExplore and to S
     ToExplore.append(u)
-    S.append(u) 
+    S.append(u)
     Visited[int(u)] = True # Visited[u] = True
     # While ToExplore is non-exmpty
     while(len(ToExplore) != 0):
@@ -48,9 +47,9 @@ def BFS(G, u):
 
 # Gets path to augment flow along
 def getPathBFS(G, s, t):
-    S, d = BFS(G, s) 
+    S, d = BFS(G, s)
     if t not in S: # If t is not reachable from s, no path exists
-        return None 
+        return None
     path = [t]
     current = len(d) - 1 # Start from end of predecessor list
     while d[current] != s:
@@ -58,7 +57,7 @@ def getPathBFS(G, s, t):
         current = int(d[current]) # Make its predecessor the current
     path.insert(0, s)
     return path
-        
+
 def getPathCapacity(G, p):
     # For vertices in p
     capacities = [] # List capacities; we want the minimum
@@ -82,7 +81,7 @@ def updateResidualGraph(G, p, f):
             G.remove_edge(v,u)
 
 # Algorithms:
-      
+
 def FordFulkersonBFS(G, s, t):
     G_f = G.copy() # Residual Graph
     f = 0
@@ -113,5 +112,60 @@ def FordFulkersonDijkstra(G, s, t):
         updateResidualGraph(G_f, path, f_prime) # Update G_f
     return f # Output f
 
+# takes in the edge list file name and outputs max flow through FF BFS
+def maxFlowUsingBFS(fileName):
+    # Get G from .txt file:
+    G = nx.read_edgelist(fileName, create_using=nx.DiGraph())
+    print(FordFulkersonBFS(G,'0', str(G.number_of_nodes() - 1)))
+    # FordFulkersonBFS(G, '1', '2')
+
+# takes in the edge list file name and outputs max flow through FF Dijkstra
+def maxFlowUsingDij(fileName):
+    # Get G from .txt file:
+    G = nx.read_edgelist(fileName, create_using=nx.DiGraph())
+    print(FordFulkersonDijkstra(G,'0', str(G.number_of_nodes() - 1)))
+
+def compareBFStoDij(fileName):
+    # Get G from .txt file:
+    G = nx.read_edgelist(fileName, create_using=nx.DiGraph())
+    # time both
+    start = time.perf_counter()
+    count = 1000
+    for i in range(count):
+        # s = 0 and sink = last numbered node = num of nodes - 1
+        FordFulkersonBFS(G,'0', str(G.number_of_nodes() - 1))
+    end = time.perf_counter()
+    totalTime = (end-start) / count
+    result = "Ford Fulkerson BFS: " + str(totalTime)
+    print(result)
+    # timing of F-F Dijkstra
+    start = time.perf_counter()
+    for i in range(count):
+        # s = 0 and sink = last numbered node = num of nodes - 1
+        FordFulkersonDijkstra(G,'0', str(G.number_of_nodes() - 1))
+    end = time.perf_counter()
+    totalTime2 = (end-start) / count
+    result = "Ford Fulkerson Dijkstra: " + str(totalTime2)
+    print(result)
+    if(totalTime < totalTime2):
+        print("BFS was faster")
+    else:
+        print("Dijkstra was faster")
+
+def plotGraph(fileName):
+    G = nx.read_edgelist(fileName, create_using=nx.DiGraph())
+    layout = nx.spring_layout(G)
+    nx.draw(G, layout, with_labels=True)
+    labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos=layout, edge_labels = labels)
+    plt.show()
+
+def main():
+    inputFileName = "edge_list2.txt"
+    plotGraph(inputFileName)
+    maxFlowUsingBFS(inputFileName)
+    maxFlowUsingDij(inputFileName)
+    compareBFStoDij(inputFileName)
 
 
+main()
