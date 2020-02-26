@@ -20,6 +20,7 @@ import time
 def BFS(G, u):
     n = len(list(G.nodes)) # Get # of vertices
     # range n + 1 because 0 will not be used but len(visited) will be
+    # increased size of visited by 1 since 0 won't be used and size will be
     Visited = [False for x in range(n+1)] # Set visitied[i] = False for 1 <= i <= n
     S = []
     ToExplore = [] # Queue: ToExplore.
@@ -161,7 +162,7 @@ def plotGraph(fileName):
     plt.show()
 
 def main():
-    inputFileName = "edge_list2.txt"
+    inputFileName = "edge_list1.txt"
     # plotGraph(inputFileName)
     maxFlowUsingBFS(inputFileName)
     # maxFlowUsingDij(inputFileName)
